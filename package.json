@@ -22,7 +22,7 @@
   "homepage": "https://github.com/potykalov/moving-element#readme",
   "devDependencies": {
     "@babel/cli": "^8.0.4",
-    "@babel/core": "^8.0.1",
+    "@babel/core": "^8.0.6",
     "@babel/preset-env": "^8.0.2",
     "@eslint/js": "^10.0.1",
     "@types/jest": "^30.0.0",
