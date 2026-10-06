@@ -33,14 +33,21 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 22.14.0
-          cache: "npm"
 
-      - run: yarn install --immutable
+      - name: Enable Corepack
+        run: |
+          corepack enable
+          corepack prepare yarn@4.18.1 --activate
 
-      - run: yarn prod
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build
+        run: yarn prod
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
