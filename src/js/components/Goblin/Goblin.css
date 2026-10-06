@@ -1,0 +1,9 @@
+.goblin {
+  cursor: pointer;
+}
+
+.goblin:active {
+  cursor:
+    url("../../../img/cursor-hummer.svg") 25 25,
+    pointer;
+}

@@ -17,6 +17,8 @@ const config = {
     watchFiles: ["src/**/*.html"],
   },
 
+  devtool: "source-map",
+
   optimization: {
     minimizer: ["...", new CssMinimizerPlugin()],
   },

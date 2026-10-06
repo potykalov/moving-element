@@ -1,5 +1,5 @@
 {
-  "name": "Moving element",
+  "name": "moving-element",
   "scripts": {
     "prod": "webpack --mode=production",
     "dev": "webpack --mode=development",
@@ -44,5 +44,6 @@
   "dependencies": {
     "core-js": "^3.50.0",
     "normalize.css": "^8.0.1"
-  }
+  },
+  "packageManager": "yarn@4.18.1"
 }

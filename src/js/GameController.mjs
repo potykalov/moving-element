@@ -1,49 +1,86 @@
-import goblinImg from "../img/goblin.png";
+import Cell from "./components/Cell/Cell.mjs";
+import Goblin from "./components/Goblin/Goblin.mjs";
 
 class GameController {
   constructor(app) {
     this.app = app;
     this.randomId = null;
+    this.imageEl = null;
+    this.cell = new Cell();
+    this.goblin = new Goblin();
+    this.scores = 0;
+    this.intervalId = null;
+    this.missedAppearances = 0;
   }
 
   init() {
-    for (let i = 0; i < 16; i++) {
-      const cellEl = document.createElement("div");
+    this.app.innerHTML = "";
 
-      cellEl.className = "cell";
-      cellEl.dataset.id = i;
+    this.randomId = Math.floor(Math.random() * 16);
+    this.imageEl = this.goblin.createGoblin();
+
+    for (let i = 0; i < 16; i++) {
+      const cellEl = this.cell.createCell(i);
 
       this.app.append(cellEl);
     }
 
-    this.randomId = Math.floor(Math.random() * 16);
-    this.imageEl = document.createElement("img");
-
-    this.imageEl.className = "cell_img";
-    this.imageEl.src = goblinImg;
-    this.imageEl.alt = "Гоблин";
+    this.app.addEventListener("click", this.onClick);
 
     this.app
       .querySelector(`.cell[data-id="${this.randomId}"]`)
       .append(this.imageEl);
 
-    this.setRandomPosition();
+    this.startInterval();
   }
 
-  setRandomPosition() {
-    setInterval(() => {
-      let randomId;
+  onClick = (e) => {
+    const cellEl = e.target.closest(".cell");
 
-      do {
-        randomId = Math.floor(Math.random() * 16);
-      } while (randomId === this.randomId);
+    if (!cellEl) {
+      return;
+    }
 
-      this.randomId = randomId;
+    const goblinEl = cellEl.querySelector(".goblin");
 
-      this.app
-        .querySelector(`.cell[data-id="${randomId}"]`)
-        .append(this.imageEl);
-    }, 1500);
+    if (goblinEl) {
+      this.scores += 1;
+      clearInterval(this.intervalId);
+      this.moveGoblin();
+      this.startInterval();
+    }
+  };
+
+  moveGoblin() {
+    let randomId;
+
+    do {
+      randomId = Math.floor(Math.random() * 16);
+    } while (randomId === this.randomId);
+
+    this.randomId = randomId;
+    this.app.querySelector(`.cell[data-id="${randomId}"]`).append(this.imageEl);
+  }
+
+  startInterval() {
+    this.intervalId = setInterval(() => {
+      this.missedAppearances += 1;
+
+      if (this.missedAppearances >= 100) {
+        clearInterval(this.intervalId);
+
+        alert(`Вы проиграли! Ваш счет: ${(this.scores += 1)}`);
+
+        this.missedAppearances = 0;
+        this.scores = 0;
+
+        this.init();
+
+        return;
+      }
+
+      this.moveGoblin();
+    }, 1000);
   }
 }
 
