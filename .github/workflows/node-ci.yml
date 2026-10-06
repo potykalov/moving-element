@@ -31,7 +31,8 @@ jobs:
 
       - name: Setup Corepack
         run: |
-          npm install --global corepack
+          npm uninstall -g yarn
+          npm install -g corepack
           corepack enable
 
       - name: Install dependencies
